@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SmallPortal.ViewsModel;
+using Microsoft.Extensions.Logging;
 
 namespace SmallPortal.Controllers
 {
@@ -17,14 +18,88 @@ namespace SmallPortal.Controllers
     {
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly ILogger<AdminController> logger;
 
         public UserManager<ApplicationUser> UserManager { get; }
 
         public AdminController(RoleManager<IdentityRole> roleManager,
-                        UserManager<ApplicationUser> userManager)
+                        UserManager<ApplicationUser> userManager,
+                                ILogger<AdminController> logger)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
+            this.logger = logger;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ManageUserRoles(string userId)
+        {
+            ViewBag.userId = userId;
+
+            var user = await userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {userId} cannot be found";
+                return View("NotFound");
+            }
+
+            var model = new List<UserRolesViewModel>();
+
+            // foreach (var role in roleManager.Roles)
+            foreach (var role in roleManager.Roles.ToList())
+            {
+                var userRolesViewModel = new UserRolesViewModel
+                {
+                    RoleId = role.Id,
+                    RoleName = role.Name
+                };
+
+                if (await userManager.IsInRoleAsync(user, role.Name))
+                {
+                    userRolesViewModel.IsSelected = true;
+                }
+                else
+                {
+                    userRolesViewModel.IsSelected = false;
+                }
+
+                model.Add(userRolesViewModel);
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ManageUserRoles(List<UserRolesViewModel> model, string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {userId} cannot be found";
+                return View("NotFound");
+            }
+
+            var roles = await userManager.GetRolesAsync(user);
+            var result = await userManager.RemoveFromRolesAsync(user, roles);
+
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", "Cannot remove user existing roles");
+                return View(model);
+            }
+
+            result = await userManager.AddToRolesAsync(user,
+                model.Where(x => x.IsSelected).Select(y => y.RoleName));
+
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", "Cannot add selected roles to user");
+                return View(model);
+            }
+
+            return RedirectToAction("EditUser", new { Id = userId });
         }
 
         [HttpPost]
@@ -52,6 +127,47 @@ namespace SmallPortal.Controllers
                 }
 
                 return View("ListUsers");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteRole(string id)
+        {
+            var role = await roleManager.FindByIdAsync(id);
+
+            if (role == null)
+            {
+                ViewBag.ErrorMessage = $"Role with Id = {id} cannot be found";
+                return View("NotFound");
+            }
+            else
+            {
+                try
+                {
+                    var result = await roleManager.DeleteAsync(role);
+
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("ListRoles");
+                    }
+
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+
+                    return View("ListRoles");
+                }
+                catch (DbUpdateException ex)
+                {
+                    logger.LogError($"Exception Occured : {ex}");
+
+                    ViewBag.ErrorTitle = $"{role.Name} role is in use";
+                    ViewBag.ErrorMessage = $"{role.Name} role cannot be deleted as there are users " +
+                        $"in this role. If you want to delete this role, please remove the users from " +
+                        $"the role and then try to delete.";
+                    return View("Error");
+                }
             }
         }
 
