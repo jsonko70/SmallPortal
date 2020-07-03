@@ -25,13 +25,5 @@ namespace SmallPortal.Controllers
             this.userManager = userManager;
             this.signInManager = signInManager;
         }
-
-       
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult AccessDenied()
-        {
-            return View();
-        }
     }
 }

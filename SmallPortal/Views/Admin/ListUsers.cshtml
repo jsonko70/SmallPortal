@@ -8,10 +8,11 @@
 
 @if (Model.Any())
 {
-    <a asp-action="Register" asp-controller="Account"
-       class="btn btn-primary mb-3" style="width:auto">
-        Add new user
-    </a>
+  @* <a asp-action="Register" asp-controller="Account"
+       class="btn btn-primary mb-3" style="width:auto">*@
+<a href='@Url.Page("/Account/Register", new { area = "Identity" })' class="btn btn-primary mb-3" style="width:auto">
+    Add new user
+</a>
 
     foreach (var user in Model)
     {
