@@ -35,7 +35,6 @@ namespace SmallPortal.Areas.Identity.Pages.Account
         public InputModel Input { get; set; }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
-
         public string ReturnUrl { get; set; }
 
         [TempData]
@@ -53,6 +52,8 @@ namespace SmallPortal.Areas.Identity.Pages.Account
 
             [Display(Name = "Remember me?")]
             public bool RememberMe { get; set; }
+            //public string ReturnUrl { get; set; }
+            //public IList<AuthenticationScheme> ExternalLogins { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -68,7 +69,6 @@ namespace SmallPortal.Areas.Identity.Pages.Account
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
             ReturnUrl = returnUrl;
         }
 
@@ -105,5 +105,6 @@ namespace SmallPortal.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
+
     }
 }

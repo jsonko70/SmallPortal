@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmallPortal.Data;
 
 namespace SmallPortal.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200721004553_ModelChanges")]
+    partial class ModelChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -162,9 +164,6 @@ namespace SmallPortal.Data.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("BusinessName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
@@ -223,7 +222,7 @@ namespace SmallPortal.Data.Migrations
                     b.Property<string>("State")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("StreetAddress")
+                    b.Property<string>("StreetAdrees")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TaxIDNumber")

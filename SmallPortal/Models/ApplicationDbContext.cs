@@ -14,6 +14,10 @@ namespace SmallPortal.Data
             : base(options)
         {
         }
+        public DbSet<SmallPortal.Models.Recipient1099> Recipient1099 { get; set; }
+        public DbSet<SmallPortal.Models.Recipient> Recipient { get; set; }
+        public DbSet<SmallPortal.Models.BoxValues> Boxvalues { get; set; }
+        public DbSet<SmallPortal.Models.Recipient1099InputModel> Recipient1099InputModel { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

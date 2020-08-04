@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmallPortal.Data;
 
 namespace SmallPortal.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200722235033_InituitInitialContact3")]
+    partial class InituitInitialContact3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -235,6 +237,54 @@ namespace SmallPortal.Data.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
+
+                    b.Property<double>("box1")
+                        .HasColumnType("float");
+
+                    b.Property<double>("box10")
+                        .HasColumnType("float");
+
+                    b.Property<double>("box13")
+                        .HasColumnType("float");
+
+                    b.Property<double>("box14")
+                        .HasColumnType("float");
+
+                    b.Property<double>("box15a")
+                        .HasColumnType("float");
+
+                    b.Property<double>("box15b")
+                        .HasColumnType("float");
+
+                    b.Property<double>("box16")
+                        .HasColumnType("float");
+
+                    b.Property<double>("box17")
+                        .HasColumnType("float");
+
+                    b.Property<double>("box2")
+                        .HasColumnType("float");
+
+                    b.Property<double>("box3")
+                        .HasColumnType("float");
+
+                    b.Property<double>("box4")
+                        .HasColumnType("float");
+
+                    b.Property<double>("box5")
+                        .HasColumnType("float");
+
+                    b.Property<double>("box6")
+                        .HasColumnType("float");
+
+                    b.Property<bool>("box7")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("box8")
+                        .HasColumnType("float");
+
+                    b.Property<double>("box9")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 

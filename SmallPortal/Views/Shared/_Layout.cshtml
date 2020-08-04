@@ -13,6 +13,7 @@
         <script src="~/lib/jquery-validate/jquery.validate.js"></script>
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
         <script src="~/lib/bootstrap/js/bootstrap.js"></script>
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
@@ -28,6 +29,7 @@
         <script src="~/lib/jquery-validate/jquery.validate.js"></script>
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
         <script src="~/lib/bootstrap/js/bootstrap.js"></script>
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
     </environment>
 
 
@@ -53,26 +55,58 @@
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
-                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage</a>
+                                <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                     <a class="dropdown-item" asp-controller="Admin"
-                                       asp-action="ListUsers">Users</a>
+                                       asp-action="ListUsers">Set Users</a>
                                     <a class="dropdown-item" asp-controller="Admin"
-                                       asp-action="ListRoles">Roles</a>
+                                       asp-action="ListRoles">Set Roles</a>
+                                    <a class="dropdown-item" asp-controller="Admin"
+                                       asp-action="Recipient1099Create">Create 1099-MISC</a>
+                                    <a class="dropdown-item" asp-controller="Admin"
+                                       asp-action="Recipient1099NecCreate">Create 1099-NEC</a>
                                 </div>
                             </li>
                         }
-
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Accounting">Accounting Services</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Accounting</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" asp-controller="Service"
+                                   asp-action="Bookkeeping">Bookkeeping</a>
+                                <a class="dropdown-item" asp-controller="Service"
+                                   asp-action="Payroll">Payroll Services</a>
+                                <a class="dropdown-item" asp-controller="Service"
+                                   asp-action="Taxes">Tax Services</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Marketing</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" asp-controller="Service"
+                                   asp-action="Digital">Digital Marketing</a>
+                                <a class="dropdown-item" asp-controller="Service"
+                                   asp-action="Branding">Branding Services</a>
+                                <a class="dropdown-item" asp-controller="Service"
+                                   asp-action="WebDevelopment">Web Development</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Startup</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" asp-controller="Service"
+                                   asp-action="Incorporation">Incorporation</a>
+                                <a class="dropdown-item" asp-controller="Service"
+                                   asp-action="BusinessPlans">Business Plans</a>
+                            </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Marketing">Marketing Services</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Startup">Startup Services</a>
-                        </li>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Contact" 
+                                   asp-action="Contact">Contact</a>
+                            </li>
                     </ul>
                 </div>
             </div>
@@ -91,12 +125,12 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2020 - SmallPortal - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2020 - Small Business Portal - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-   *@* @RenderSection("Scripts", required: false) *@
+    *@* @RenderSection("Scripts", required: false) *@
 </body>
 </html>

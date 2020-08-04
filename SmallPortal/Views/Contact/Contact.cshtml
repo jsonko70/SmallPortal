@@ -1,0 +1,101 @@
+﻿@page
+@model ContactModel
+@using Microsoft.AspNetCore.Mvc.RazorPages
+@using MimeKit
+@using MailKit.Net.Smtp
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@functions {
+    public class ContactModel:PageModel
+    {
+        string username = "";
+        string password = "";
+        string emailPrivate = "";
+
+
+        public string PostedMessage { get; set; } = "";
+        [BindProperty]
+        public string Name { get; set; }
+        [BindProperty]
+        public string Email { get; set; }
+        [BindProperty]
+        public string Message { get; set; }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            SendMail(Name, Email, Message);
+            return Redirect("/contact/pb=1");
+        }
+        public void OnGet(int id)
+        {
+            if(Request.QueryString.HasValue && Request.QueryString.Value.Contains("pb=1")){
+
+                ViewData["PostedMessage"] = "Your message has been sent [viewdata]";
+                PostedMessage = "Your message has been sent [property]";
+            }
+
+        }
+        public void SendMail(string Name, string Email, string MessageBody)
+        {
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress(Name, Email));
+            message.To.Add(new MailboxAddress("Team", "team@smallportal.com"));
+            message.Subject = "Email from Small Portal App";
+            message.Body = new TextPart("plain")
+            {
+                Text = MessageBody
+            };
+
+            using (var client = new SmtpClient())
+            {
+                client.Connect("smtp.gmail.com", 587, false);
+                client.Authenticate("username", "password");
+                client.Send(message);
+                client.Disconnect(true);
+            }
+        }
+    }
+}
+@{
+    ViewData["Title"] = "Contact";
+}
+<h2>@ViewData["Title"]</h2>
+<hr />
+<h3>@Model.PostedMessage</h3>
+<h3>@ViewData["PostedMessage"]</h3>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Name</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label">Email</label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Message" class="control-label">Message</label>
+                <tetxtarea asp-for="Message" class="form-control"></tetxtarea>
+                <span asp-validation-for="Message" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Submit" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
+<address>
+    1404 Brown Trail, Suite A <br />
+    Bedford, TX 76022 <br />
+    <abbr title="Phone">P:</abbr>
+    214-226-8249
+</address>
+
+<address>
+  <strong>Support:</strong> <a href="mailto:Team@smallportal.com">Team@smallportal.com</a>
+</address>
